@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1= title
+    h3 #{title} is a solution to Toronto's food waste problem
+
+    div.welcome-description
+        p All about Waste not Now
+
+    form(method="post")
+        input(type="text" name="username")
+        input(type="email" name="email")
+        input(type="submit")

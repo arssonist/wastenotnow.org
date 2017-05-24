@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -10,6 +11,7 @@ var nodemailer = require('nodemailer');
 var mg = require('nodemailer-mailgun-transport');
 var ncof = require('nconf');
 var auth = require('./config.json')
+var mongoose = require('mongoose')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -30,6 +32,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+///DB
+
+mongoose.connect(process.env.DB_URI)
 
 // log requests to stdout and also
 // log HTTP requests to a file in combined format

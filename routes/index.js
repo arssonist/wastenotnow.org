@@ -6,6 +6,8 @@ var nodemailer = require('nodemailer');
 var mg = require('nodemailer-mailgun-transport');
 var auth = require('../config.json')
 var nodemailerMailgun = nodemailer.createTransport(mg(auth));
+var homeController = require('../controllers/home.controller.js')
+var Email = require("../models/emails")
 
 // router.use(logger('dev'));
 router.use(bodyParser.json());
@@ -13,6 +15,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+    console.log(homeController.showHome)
     res.render('index', { title: 'Waste Not Now' })
 });
 

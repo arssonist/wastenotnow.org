@@ -73,13 +73,50 @@ router.post("/", (req,res) => {
         name:req.body.username,
         email: req.body.email
     }
+    //
+    // Email.remove({}, () => {
+    // var entered = new Email(entry)
+    // entered.save()
+    //
+    // })
+    // res.send("email saved")
 
-    Email.remove({}, () => {
-    var entered = new Email(entry)
-    entered.save()
-
+    Email.find({"email":entry.email}, (err, email) => {
+        console.log(email)
+        if(err){
+            console.log(err)
+        }
+        if(email.length){
+            console.log('exists')
+        } else {
+            console.log("doesn't exist")
+            var entered = new Email(entry)
+            entered.save()
+            console.log('email saved')
+        }
     })
-    res.send("email saved")
+
+    // Email.find({ 'name': entry.name,'email':entry.email }, function(err, email) {
+    //
+    //     if (err) {
+    //
+    //         console.log(`Signup error ${err}`);
+    //
+    //     }
+    //
+    //     //if user found.
+    //     if (email.length!=0) {
+    //       if(email[0].username){
+    //         console.log('Username already exists, username: ' + username);
+    //          }else{
+    //             console.log('EMAIL already exists, email: ' + email);
+    //          }
+    //          var err = new Error();
+    //         err.status = 310;
+    //         return done(err);
+    //
+    //     }
+    // })
 })
 
 module.exports = router;

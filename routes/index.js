@@ -15,7 +15,6 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    console.log(homeController.showHome)
     res.render('index', { title: 'Waste Not Now' })
 });
 
@@ -34,10 +33,25 @@ router.get("/contact", function (req, res) {
   res.send('contact page')
  })
 
- // http POST /contact
-router.post("/", function (req, res) {
-    console.log('Username: ' + req.body.username)
-    console.log('Password: ' + req.body.email)
+
+router.get("/db-seed", function (req, res) {
+
+    var emails = [
+        {name:'user1', email:'user1@user1.com'},
+        {name:'user2', email:'user2@user2.com'},
+        {name:'user3', email:'user3@user3.com'},
+        {name:'user4', email:'user4@user4.com'}
+    ]
+    //To Remove all events
+    Email.remove({}, () => {
+        for (email of emails){
+            var newEmail = new Email(email)
+            newEmail.save()
+        }
+    })
+    res.send('DB seeded')
+    //console.log('Username: ' + req.body.username)
+    //console.log('Password: ' + req.body.email)
     // var apikey = auth.api_key;
     // var domain = auth.domain
     // var mailgun = require('mailgun-js')({apiKey: apikey, domain: domain});
@@ -53,6 +67,19 @@ router.post("/", function (req, res) {
     //   console.log(body);
     // });
 });
+router.post("/", (req,res) => {
 
+    var entry = {
+        name:req.body.username,
+        email: req.body.email
+    }
+
+    Email.remove({}, () => {
+    var entered = new Email(entry)
+    entered.save()
+
+    })
+    res.send("email saved")
+})
 
 module.exports = router;

@@ -11,6 +11,7 @@
     "debug": "~2.6.0",
     "dot-env": "0.0.1",
     "express": "~4.14.1",
+    "express-validator": "^3.2.0",
     "mailgun-js": "^0.10.1",
     "mongoose": "^4.10.2",
     "morgan": "~1.7.0",

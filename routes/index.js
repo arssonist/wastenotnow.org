@@ -8,15 +8,28 @@ var auth = require('../config.json')
 var nodemailerMailgun = nodemailer.createTransport(mg(auth));
 var homeController = require('../controllers/home.controller.js')
 var Email = require("../models/emails")
+var expressValidator = require('express-validator')
 
 // router.use(logger('dev'));
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
+router.use(expressValidator()); // Add this after the bodyParser middlewares!
+
+// router.use(expressValidator({
+//  customValidators: {
+//     isArray: function(value) {
+//         return Array.isArray(value);
+//     },
+//     noEmail: function(email) {
+//         return param >= num;
+//     }
+//  }
+// }));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Waste Not Now' })
-});
+    res.render('index', { title: "Waste Not Now"})
+ })
 
 // 404 for page not found requests
 router.get(function (request, response) {
@@ -69,6 +82,7 @@ router.get("/db-seed", function (req, res) {
 });
 router.post("/", (req,res) => {
 
+    req.checkBody('name', 'Cannot be empty').notEmpty()
     var entry = {
         name:req.body.username,
         email: req.body.email
@@ -88,6 +102,13 @@ router.post("/", (req,res) => {
         }
         if(email.length){
             console.log('exists')
+            res.render('index',
+            {   title: "Waste Not Now",
+                errors: "This email already exixts"
+            })
+            return
+            // res.send('email already exists')
+            // return res.redirect('/')
         } else {
             console.log("doesn't exist")
             var entered = new Email(entry)
@@ -95,6 +116,9 @@ router.post("/", (req,res) => {
             console.log('email saved')
         }
     })
+
+
+
 
     // Email.find({ 'name': entry.name,'email':entry.email }, function(err, email) {
     //

@@ -8,6 +8,8 @@ block content
         p All about Waste not Now
 
     form(method="post")
-        input(type="text" name="username")
+        input(for="username" type="text" name="username")
         input(type="email" name="email" required)
         input(type="submit")
+        |<br />
+        span #{errors}

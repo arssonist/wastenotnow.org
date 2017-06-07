@@ -25,6 +25,14 @@ router.use(expressValidator()); // Add this after the bodyParser middlewares!
 //     }
 //  }
 // }));
+router.get('/debug', (req,res) => {
+
+    Email.findOne( {email:'drumgod101@gmail.com'}, (err,data) => { console.log(data.email)
+    
+    })
+
+    res.send('test')
+})
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

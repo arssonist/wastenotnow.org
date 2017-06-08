@@ -25,10 +25,12 @@ router.use(expressValidator()); // Add this after the bodyParser middlewares!
 //     }
 //  }
 // }));
+let title = "Waste Not Now"
+
 router.get('/debug', (req,res) => {
 
     Email.findOne( {email:'drumgod101@gmail.com'}, (err,data) => { console.log(data.email)
-    
+
     })
 
     res.send('test')
@@ -36,7 +38,7 @@ router.get('/debug', (req,res) => {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('index', { title: "Waste Not Now"})
+    res.render('index', { title: title})
  })
 
 // 404 for page not found requests
@@ -110,8 +112,8 @@ router.post("/", (req,res) => {
         }
         if(email.length){
             console.log('exists')
-            res.render('index',
-            {   title: "Waste Not Now",
+            res.render('index', {
+                title: title,
                 errors: "This email already exixts"
             })
             return
@@ -121,7 +123,10 @@ router.post("/", (req,res) => {
             console.log("doesn't exist")
             var entered = new Email(entry)
             entered.save()
-            console.log('email saved')
+            res.render('index',{
+                title: title,
+                success:"Thanks! Your email has been saved."
+            })
         }
     })
 

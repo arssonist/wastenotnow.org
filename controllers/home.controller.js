@@ -1,7 +1,11 @@
+var express = require('express');
+var app     = express();
+
+
 module.exports = {
     showHome:(req,res) =>{
-        //res.render('views/index',{title:"Waste Not Now"})
-        console.log("teststetsetset")
+        res.render('index',{title:req.app.locals.title})
+        
     }
 
 }

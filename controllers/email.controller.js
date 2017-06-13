@@ -11,30 +11,23 @@ var emails = [
 
 module.exports = {
     debug:(req,res) => {
-        // Email.findOne( {email:'drumgod101@gmail.com'}, (err,data) =>{ console.log(data.email)
-        // })
-    Email.remove({}, () => {
-        function saveEmail(e){
-            for (email of e){
-                console.log(email)
+
+        Email.remove({}, () => {
+
+            for (email of emails){
                 newEmail = new Email(email)
-                console.log(newEmail)
-                newEmail.save( (err, e) => {
-                    if(err) console.error(err)
-                if(newEmail.save() === true){
-                    console.log('saved')
-                } else {
-                    console.log('not saved')
-                console.log(e)
+                newEmail.save((err, e, numAffected) => {
+                    console.log(`${e} saved`)
+                    if(err){
+                        console.error(error)
+                    }
+                })
+
             }
         })
 
-        }
-        saveEmail(emails)
-        res.redirect('/')
-    }
-    })
-},
+        res.render('index',{success:'debug route working'})
+    },
     dbseed:(req,res) => {
         var emails = [
             {name:'user1', email:'user1@user1.com'},
@@ -63,6 +56,37 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+    addEmail:(req,res) => {
+        //check for empty email
+        req.checkBody('name', 'Cannot be empty').notEmpty()
+        var entry = {
+            name:req.body.username,
+            email: req.body.email
+        }
+        //check if email exist, if not save
+        Email.find({"email":entry.email}, (err, email) => {
+            console.log(email)
+            if(err){
+                console.log(err)
+            }
+            if(email.length){
+                console.log('exists')
+                res.render('index', {
+                    title: req.app.locals.title,
+                    errors: "This email already exixts"
+                })
+                return
+            } else {
+                console.log("doesn't exist")
+                var entered = new Email(entry)
+                entered.save()
+                res.render('index',{
+                    title:req.app.locals.title ,
+                    success:"Thanks! Your email has been saved."
+                })
+            }
+        })
 
+    }
 }
